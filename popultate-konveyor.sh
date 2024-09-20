@@ -13,10 +13,10 @@ declare -A app1=(
 
 declare -A app2=(
   [name]="Day Trader"
-  [url]="https://github.com/WASdev/sample.daytrader7.git"
-  [oldBranch]="session"
-  [newBranch]="master"
-  [target]="quarkus"
+  [url]="https://github.com/abrugaro/sample.daytrader7.git"
+  [oldBranch]="master"
+  [newBranch]="fixes"
+  [target]="cloud-readiness"
 )
 
 apps=("app1" "app2")
@@ -125,7 +125,7 @@ createAnalysis() {
     ]
 }"
 
-  # Create taskgroup
+  # Create TaskGroup
   code=$(curl -kSs -o ${tmp} -w "%{http_code}" -X POST ${host}/taskgroups -H 'Content-Type:application/json' -H 'Accept: application/json' -d "${d}")
   if [ ! $? -eq 0 ]; then
     exit $?
@@ -151,7 +151,6 @@ createAnalysis() {
   204)
     id=$(jq .id ${tmp})
     print "Analysis ${id} STARTED for application: ${appName} id=${appId}"
-    #updateBranch ${appId} ${appName} "https://github.com/konveyor/tackle-testapp-public.git" "main"
     ;;
   *)
     print "Start analysis for: appId=${appId} - FAILED: ${code}."
