@@ -5,9 +5,9 @@ count=10
 
 declare -A app1=(
   [name]="Tackle-testapp public"
-  [url]="https://github.com/konveyor/tackle-testapp-public.git"
-  [oldBranch]="feature/test-java9-removed-packagek"
-  [newBranch]="main"
+  [url]="https://github.com/abrugaro/tackle-testapp-public"
+  [oldBranch]="main"
+  [newBranch]="hardcode-ip-fix"
   [target]="cloud-readiness"
 )
 
@@ -16,7 +16,7 @@ declare -A app2=(
   [url]="https://github.com/WASdev/sample.daytrader7.git"
   [oldBranch]="session"
   [newBranch]="master"
-  [targets]="quarkus"
+  [target]="quarkus"
 )
 
 apps=("app1" "app2")
@@ -53,6 +53,10 @@ while getopts "u:b:n:o:h" arg; do
     output=$OPTARG
     ;;
   h)
+    usage
+    exit 1
+    ;;
+  *)
     usage
     exit 1
     ;;
@@ -133,7 +137,7 @@ createAnalysis() {
     ;;
   *)
     print "Create task for: appId=${appId} - FAILED: ${code}."
-    cat ${tmp}c
+    cat ${tmp}
     exit 1
     ;;
   esac
@@ -235,7 +239,7 @@ tags:
 
       createdApps["${id}"]="${randomApp}"
 
-      createAnalysis ${id} "${appName}" "${appTarget}"
+      createAnalysis "$id" "$appName" "$appTarget"
       ;;
     *)
       print "Create application ${appName} - FAILED: ${code}."
@@ -255,8 +259,13 @@ tags:
     appTarget=$(eval echo \${${appKey}[target]})
     appNewBranch=$(eval echo \${${appKey}[newBranch]})
 
-    updateBranch $appId "${appName}" "${appUrl}" "${appNewBranch}"
+    updateBranch "$appId" "${appName}-${appId}" "${appUrl}" "${appNewBranch}"
+
+    createAnalysis "$appId" "${appName}-${appId}" "${appTarget}"
   done
+
+  waitForAnalyses
+
 }
 
 createApplications
