@@ -19,7 +19,15 @@ declare -A app2=(
   [target]="cloud-readiness"
 )
 
-apps=("app1" "app2")
+declare -A app3=(
+  [name]="Ticket Monster"
+  [url]="https://github.com/jmle/monolith.git"
+  [oldBranch]="master"
+  [newBranch]="quarkus"
+  [target]="quarkus"
+)
+
+apps=("app1" "app2" "app3")
 declare -A createdApps
 
 pid=$$
