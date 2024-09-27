@@ -27,7 +27,15 @@ declare -A app3=(
   [target]="quarkus"
 )
 
-apps=("app1" "app2" "app3")
+declare -A app4=(
+  [name]="Hello world"
+  [url]="https://github.com/savitharaghunathan/helloworld-mdb.git"
+  [oldBranch]="main"
+  [newBranch]="quarkus"
+  [target]="quarkus"
+)
+
+apps=("app1" "app2" "app3" "app4")
 declare -A createdApps
 
 pid=$$
